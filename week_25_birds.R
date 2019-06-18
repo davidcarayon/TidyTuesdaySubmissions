@@ -29,7 +29,7 @@ cluster <- cutree(clust, k = 3) %>%
   rename("cluster" = ".") %>%
   tbl_df()
 
-## Correspondance analysis
+## Correspondence analysis
 res.CA <- CA(bird_matrix, graph = FALSE)
 
 # Scree plot (Keeping 2 dimensions)
@@ -65,7 +65,7 @@ g1 <- ggplot(data = rows, aes(x = dim_1, y = dim_2)) +
   stat_ellipse(aes(fill = cluster), geom = "polygon", alpha = 0.4, level = 0.95, color = "black") +
   labs(
     fill = "Cluster", x = paste0("Dim 1: ", round(res.CA$eig[1, 2], 2), " %"),
-    y = paste0("Dim 2: ", round(res.CA$eig[2, 2], 2), " %"), title = "Correspondance analysis - Rows"
+    y = paste0("Dim 2: ", round(res.CA$eig[2, 2], 2), " %"), title = "Correspondence analysis - Rows"
   ) +
   theme_base() +
   theme(axis.text = element_blank(), axis.ticks = element_blank())
@@ -79,7 +79,7 @@ g2 <- ggplot(data = cols, aes(x = dim_1, y = dim_2)) +
   theme(axis.text = element_blank(), axis.ticks = element_blank()) +
   labs(
     x = paste0("Dim 1: ", round(res.CA$eig[1, 2], 2), " %"),
-    y = paste0("Dim 2: ", round(res.CA$eig[2, 2], 2), " %"), title = "Correspondance analysis - Columns",
+    y = paste0("Dim 2: ", round(res.CA$eig[2, 2], 2), " %"), title = "Correspondence analysis - Columns",
     caption = "Data from Bird Studies Canada | Plot by @david_carayon"
   )
 
