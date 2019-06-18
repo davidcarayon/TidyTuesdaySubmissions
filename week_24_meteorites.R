@@ -111,7 +111,7 @@ ts <- meteorites %>%
     title = "Number of meteorites observed worldwide between 1975 and 2013",
     color = "Meteorite class",
     caption = "Data from the Meteoritical Society and shared by NASA \nPlot from @david_carayon",
-    subtitle = paste0("The Mann-Kendal trend tests indicates a significant increasing trend (P = ", mk_test, ")")
+    subtitle = paste0("The Mann-Kendal trend tests indicates a significant increasing trend (P = ", 0.02, ")")
   ) +
   geom_curve(aes(x = 1984, y = 3000, xend = 1979.4, yend = 3100), curvature = 0.3, arrow = arrow(length = unit(2, "mm")), color = "white") +
   annotate("text", x = 1990, y = 2920, label = paste0(max(counts$n), " meteorites in 1979"), color = "white", family = "mono", size = 5)
