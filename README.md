@@ -7,3 +7,7 @@
 ## Christmas Bird Counts - Week 25
 
 ![](README_figs/birds_tidytuesday.png)
+
+## Media Franchise Revenues - Week 27
+
+![](README_figs/media_tidytuesday.png)
