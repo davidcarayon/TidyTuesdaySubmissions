@@ -11,3 +11,7 @@
 ## Media Franchise Revenues - Week 27
 
 ![](README_figs/media_tidytuesday.png)
+
+## Video Games Dataset - Week 31
+
+![](README_figs/videogames_tidytuesday.png)
