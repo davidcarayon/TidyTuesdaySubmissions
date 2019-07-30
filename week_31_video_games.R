@@ -112,7 +112,7 @@ g2 <- clean_df %>%
     axis.title = element_text(colour = "white", family = "mono", face = "bold"),
     panel.grid = element_blank()
   ) +
-  labs(x = "Release month", y = "Release year", fill = "Metascore", title = "Average metascore of games according to month \nand year of release")
+  labs(x = "Release month", y = "Release year", fill = "Metascore", title = "Average metascore of games according to month \nand year of release", caption = "Data provided by @brightcdns |Plot by @david_carayon")
 
 
 
