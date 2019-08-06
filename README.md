@@ -15,3 +15,8 @@
 ## Video Games Dataset - Week 31
 
 ![](README_figs/videogames_tidytuesday.png)
+
+## Bob Ross's paintings - Week 32
+
+![](README_figs/bob_ross_tidytuesday.png)
+
