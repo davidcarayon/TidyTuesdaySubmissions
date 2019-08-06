@@ -36,8 +36,8 @@ ggplot(aes(label = element, size = freq, color = freq)) +
 
 
 
-# Copy --------------------------------------------------------------------
-#@jmcastagnetto
+# Circular barplot --------------------------------------------------------------------
+# Inspiration : @jmcastagnetto
 
 
 br_elements <- bob_ross %>% 
@@ -97,6 +97,10 @@ g3 <- ggplot(data = long,aes(x = freq, y = element, fill = ..x..)) +
   labs(y = "Element",
        caption = "Data provided by 538 | Plot by @david_carayon\nInspiration : @jmcastagnetto")
 
+
+
+
+# Plot --------------------------------------------------------------------
 plot_grid(g1, plot_grid(g2, g3), ncol = 1, rel_heights = c(1, 1.45)) +
   ggsave("README_figs/bob_ross_tidytuesday.png", dpi = "retina", width = 13.1, height = 10.4)
 
