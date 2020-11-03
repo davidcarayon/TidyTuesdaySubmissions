@@ -1,22 +1,44 @@
-# TidyTuesday Submissions
+<h1 style="font-weight:normal" align="center">
+  &nbsp;#TidyTuesday Contributions&nbsp;
+</h1>
 
-## Meteorite crashes - Week 24
+<div align="center">
 
-![](README_figs/meteorites_tidytuesday.png)
+&nbsp;&nbsp;&nbsp;:e-mail: [Email][Email]&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:speech_balloon: [Twitter][Twitter]&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:necktie: [LinkedIn][LinkedIn]
 
-## Christmas Bird Counts - Week 25
+<!--
+Quick Link
+-->
+[Twitter]:https://twitter.com/david_carayon
+[LinkedIn]:https://www.linkedin.com/in/carayon-david/
+[Email]:mailto:david.carayon@inrae.fr
 
-![](README_figs/birds_tidytuesday.png)
 
-## Media Franchise Revenues - Week 27
+</div>
 
-![](README_figs/media_tidytuesday.png)
 
-## Video Games Dataset - Week 31
+This repos contains my contributions for the #TidyTuesday weekly R challenge. This is a challenge which focusses on understanding how to summarize and arrange data to make meaningful and/or beautiful charts with {ggplot2}, {tidyr}, {dplyr} and other tools that are part of the {tidyverse} ecosystem. You can read all about it and get involved [here](https://github.com/rfordatascience/tidytuesday/blob/master/README.md).
 
-![](README_figs/videogames_tidytuesday.png)
 
 ## Bob Ross's paintings - Week 32
 
-![](README_figs/bob_ross_tidytuesday.png)
+![](plots/bob_ross_tidytuesday.png)
+
+## Video Games Dataset - Week 31
+
+![](plots/videogames_tidytuesday.png)
+
+## Media Franchise Revenues - Week 27
+
+![](plots/media_tidytuesday.png)
+
+## Meteorite crashes - Week 24
+
+![](plots/meteorites_tidytuesday.png)
+
+
+
+
+
+
 
