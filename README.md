@@ -19,22 +19,34 @@ Quick Link
 
 This repos contains my contributions for the #TidyTuesday weekly R challenge. This is a challenge which focusses on understanding how to summarize and arrange data to make meaningful and/or beautiful charts with {ggplot2}, {tidyr}, {dplyr} and other tools that are part of the {tidyverse} ecosystem. You can read all about it and get involved [here](https://github.com/rfordatascience/tidytuesday/blob/master/README.md).
 
+# 2020
 
-## Bob Ross's paintings - Week 32
 
-![](plots/bob_ross_tidytuesday.png)
+# 2019
 
-## Video Games Dataset - Week 31
+## Bob Ross's paintings
 
-![](plots/videogames_tidytuesday.png)
+[Code here](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_32_bob_ross.R)
 
-## Media Franchise Revenues - Week 27
+![](plots/2019/bob_ross_tidytuesday.png)
 
-![](plots/media_tidytuesday.png)
+## Video Games Dataset
 
-## Meteorite crashes - Week 24
+[Code here](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_31_video_games.R)
 
-![](plots/meteorites_tidytuesday.png)
+![](plots/2019/videogames_tidytuesday.png)
+
+## Media Franchise Revenues
+
+[Code here](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_27_media.R)
+
+![](plots/2019/media_tidytuesday.png)
+
+## Meteorite crashes
+
+[Code here](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_24_meteorites.R)
+
+![](plots/2019/meteorites_tidytuesday.png)
 
 
 
