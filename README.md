@@ -17,11 +17,15 @@ This repos contains my contributions for the #TidyTuesday weekly R challenge. Th
 
 # 2020
 
+Starting from 2020, my weekly submissions are now complete analysis documents (using Rmd's) that I can publish on Rpubs : 
+
 - Week 46 : **Phones** (EDA and basic maps with {sf} and {mapview}) : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2020_46_phones.Rmd)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [RPubs post](https://rpubs.com/davidcarayon/tidytuesday_week_46)
 
 - Week 45 : **IKEA furniture** (EDA and Linear + Multiple regression) : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2020_45_ikea.Rmd)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [RPubs post](https://rpubs.com/davidcarayon/tidytuesday_week_45)
 
 # 2019
+
+In 2019, my submissions were mainly focused each week on a single plot output to share on twitter with the #Tidytuesday challenge.
 
 - Week 32 : **Bob Ross's paintings** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_32_bob_ross.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/plots.md#bob-rosss-paintings---week-32)
 
