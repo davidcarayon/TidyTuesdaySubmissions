@@ -17,9 +17,9 @@ This repos contains my contributions for the #TidyTuesday weekly R challenge. Th
 
 # 2020
 
-- Week 46 : **Phones** (EDA and basic maps with {sf} and {mapview}) : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2020_46_phones.Rmd)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [HTML preview](https://htmlpreview.github.io/?https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/html/2020_46_phones.html)
+- Week 46 : **Phones** (EDA and basic maps with {sf} and {mapview}) : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2020_46_phones.Rmd)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [RPubs post](https://rpubs.com/davidcarayon/tidytuesday_week_46)
 
-- Week 45 : **IKEA furniture** (EDA and Linear + Multiple regression) : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2020_45_ikea.Rmd)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [HTML preview](https://htmlpreview.github.io/?https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/html/2020_45_ikea.html)
+- Week 45 : **IKEA furniture** (EDA and Linear + Multiple regression) : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2020_45_ikea.Rmd)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [RPubs post](https://rpubs.com/davidcarayon/tidytuesday_week_45)
 
 # 2019
 
