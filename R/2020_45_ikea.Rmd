@@ -1,6 +1,6 @@
 ---
-title: "Week 45 : IKEA funiture"
-subtitle : "This Week's topic : Simple and multiple linear regression"
+title: "Week 45 : IKEA furniture"
+subtitle : "This week's topic : Simple and multiple linear regression"
 author: "David Carayon"
 output: 
   html_document:

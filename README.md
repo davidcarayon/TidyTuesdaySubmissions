@@ -17,17 +17,17 @@ This repos contains my contributions for the #TidyTuesday weekly R challenge. Th
 
 # 2020
 
-- Week 45 : **IKEA furniture** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2020_45_ikea.Rmd)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [HTML preview](https://htmlpreview.github.io/?https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/html/2020_45_ikea.html)
+- Week 45 : **IKEA furniture** (Linear and Multiple regression) : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2020_45_ikea.Rmd)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [HTML preview](https://htmlpreview.github.io/?https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/html/2020_45_ikea.html)
 
 # 2019
 
-- Week 32 : **Bob Ross's paintings** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_32_bob_ross.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/bob_ross_tidytuesday.png)
+- Week 32 : **Bob Ross's paintings** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_32_bob_ross.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/plots.md#bob-rosss-paintings---week-32)
 
-- Week 31 : **Video Games Dataset** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_31_video_games.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/videogames_tidytuesday.png)
+- Week 31 : **Video Games Dataset** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_31_video_games.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/plots.md#video-games-dataset---week-31)
 
-- Week 27 : **Media Franchise Revenues** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_27_media.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/media_tidytuesday.png)
+- Week 27 : **Media Franchise Revenues** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_27_media.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/plots.md#media-franchise-revenues---week-27)
 
-- Week 27 : **Meteorite crashes** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_24_meteorites.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/meteorites_tidytuesday.png)
+- Week 27 : **Meteorite crashes** : :computer: [Code](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/R/2019_24_meteorites.R)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;:bar_chart: [Plot](https://github.com/davidcarayon/TidyTuesdaySubmissions/blob/master/plots/2019/plots.md#meteorite-crashes---week-24)
 
 
 
