@@ -1,6 +1,4 @@
-<h1 style="font-weight:normal" align="center">
-  &nbsp;#TidyTuesday Contributions&nbsp;
-</h1>
+# #TidyTuesday Contributions <img src='www/tt_logo.jpg' align="right" height="139" />
 
 <div align="center">
 

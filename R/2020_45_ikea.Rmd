@@ -1,0 +1,309 @@
+---
+title: "Week 45 : IKEA funiture"
+subtitle : "This Week's topic : Simple and multiple linear regression"
+author: "David Carayon"
+output: 
+  html_document:
+    css: analysis_report.css
+    theme: united
+    df_print: kable
+    highlight: haddock
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    toc_depth: 3
+    number_sections: false
+    code_folding: show
+    code_download: true
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "../html") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Packages and setup
+
+We will be using these packages :
+
+```{r libraries}
+# Importing and wrangling data
+library(readr)
+library(tidyr)
+library(dplyr)
+
+# EDA
+library(skimr)
+
+# For plotting
+library(ggplot2)
+
+# Modelling
+library(ggfortify)
+library(rstatix)
+library(ggpubr)
+library(broom)
+```
+
+And we will be using my usual custom ggplot theme :
+
+```{r theme loading}
+source("https://raw.githubusercontent.com/davidcarayon/TidyTuesdaySubmissions/master/R/themes.R")
+
+# And adding some IKEA specificities
+ikea_yellow <- "#F7E700"
+ikea_blue <- "#273FAE"
+
+theme_update(panel.background = element_rect(fill = ikea_blue))
+
+```
+
+So this week's data is about IKEA furniture. First, we load the data. As there is only one dataframe this week, we'll read the data manually :
+
+```{r data loading}
+ikea <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-11-03/ikea.csv') %>% 
+  mutate(item_id = as.character(item_id)) # Don't want the ID to be considered as a numeric variable. 
+```
+
+# Exploratory Data Analysis
+
+## Data structure
+
+Let's have a look at the data structure :
+
+```{r glimpse}
+glimpse(ikea)
+```
+
+We can now have a deeper look into data structure. I especially like the `skimr::skim()` function for this :
+
+```{r skim}
+skim(ikea)
+```
+
+It seems that each piece of furniture has a single ID and a name. These furniture are described by a qualitative variable, `category`, and a few quantitative variables such as `price`, `depth`, `height` or `width`. We already can see some `NA`'s that will have to be taken into account for data analysis.
+
+We can also note that the total number of rows (`r nrow(ikea)`) is larger than the number of unique furniture id's (2962). We can try to explore why :
+
+```{r finding duplicates}
+
+# Let's find the duplicates
+duplicates <- ikea %>% 
+  group_by(item_id) %>% 
+  count() %>% 
+  filter(n>1) %>% 
+  pull(item_id)
+
+# Filter by duplicates
+ikea %>% filter(item_id %in% duplicates) %>% 
+  arrange(item_id) %>% 
+  select(X1:price) %>% 
+  head()
+```
+
+The mismatch between item ID and the number of rows is due to multiple categories being assigned to the same item, creating multiple lines for the same object. This could eventually be fixed by aggregating these lines with a `paste(collapse = ", ")` but we will keep the original structure for now.
+
+## Some charts
+
+Speaking about categories, let's see which categories are the most sold by IKEA :
+
+```{r counting categories, fig.width = 9}
+
+ikea %>% 
+  group_by(category) %>% 
+  count() %>% 
+
+ggplot(aes(x = reorder(category,n), y = n)) +
+  geom_segment(aes(xend = reorder(category,n), y = 0, yend = n), color = ikea_yellow, size = 2) +
+  geom_point(shape = 21, size = 4, fill = ikea_yellow, color = "black") +
+  scale_y_continuous(breaks = seq(0,600,50)) +
+  coord_flip() +
+  labs(y = "# of items", x = "Categories")
+```
+
+Then we can ask ourselves : Which categories are, on average, the most expensive ones ?
+
+```{r boxplot, fig.width = 9}
+
+# We convert the prices in euros € using an approximate rate of 1SAR ~ 0.22EUR
+
+ikea <- ikea %>% 
+  mutate(euro_price = price * 0.22)
+
+
+mean_prices <- ikea %>%
+  group_by(category) %>% 
+  mutate(mean_price = mean(euro_price, na.rm=TRUE),
+         median_price = median(euro_price,na.rm=TRUE)) %>%
+  ungroup()
+
+ggplot(mean_prices,aes(x = reorder(category,median_price), y = euro_price)) +
+  stat_boxplot(geom = "errorbar", width = 0.3, color = ikea_yellow) +
+  geom_boxplot(fill = ikea_yellow, color = "black", outlier.color = ikea_yellow) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::dollar_format(suffix = "€", prefix = "")) +
+  labs(x = "Categories", y = "Price in euros €")
+
+```
+
+So, wardrobes, sofas and beds are *usually* the most expensive pieces of furniture sold by IKEA. But we can clearly see here that there are a lot of outliers !
+
+# Linear model
+
+To practice our linear model skills, we'll ask ourselves a very simple question : Do Sofas price depends on their width ?
+
+Let's have a first look to this relation with a simple scatterplot :
+
+```{r scatterplot}
+ikea_sofas <- ikea %>% filter(category == "Sofas & armchairs") 
+
+ggplot(ikea_sofas,aes(x = width, y = euro_price)) +
+  geom_point(color = ikea_yellow) +
+  scale_y_continuous(labels = scales::dollar_format(suffix = "€", prefix = "")) +
+  labs(x = "Sofas width (cm)", y ="Price (€)", title = paste0("IKEA Sofas and armchairs, N = ",nrow(ikea_sofas)," items"))
+```
+
+## Checking for the LINE conditions
+
+Our linear model proposition seems appropriate. But first, we need to check the LINE conditions :
+
+-   L : Linear
+-   I : Independent
+-   N : Normality
+-   E : Equality of variances
+
+The linear model we are using is actually an Ordinary Least Squares (OLS) regression, which means that the algorithm used to find the "best fitting line" is the one that minimizes the square of the distance between each point and the line (i.e. the residual values) :
+
+```{r least squares}
+# First run the model
+model <- lm(euro_price ~ width, data = ikea_sofas)
+
+augment(model) %>% 
+  ggplot(aes(x = width, y = euro_price)) +
+  geom_segment(aes(x = width, y = euro_price, yend = .fitted, xend = width), color = "red") +
+  geom_point(fill = ikea_yellow, color = "black",shape = 21) +
+  geom_line(aes(y = .fitted), color = ikea_yellow) +
+  scale_y_continuous(labels = scales::dollar_format(suffix = "€", prefix = "")) +
+  labs(x = "Sofas width (cm)", y = "Price (€)")
+
+```
+
+We can now check our conditions using the `autoplot.lm` method from the `{ggfortify}` package :
+
+```{r line 1, fig.width = 12}
+autoplot(model) + theme_bw()
+```
+
+Having a look at these graphs, we can see that the normality condition seems to be respected (the residuals are globally fitting the QQ-line). The equality of variances also seems respected when considering the residuals *vs* fitted graph (except a minor "banana" form). We can also see that the 365th data point seems to be an extreme/outlier value. For future analysis, we decide to remove this particular point :
+
+```{r removing outlier}
+ikea_sofas <- ikea_sofas[-365,]
+```
+
+We can consider that our model doesn't violate the LINE conditions.
+
+## Basic model
+
+We can fit the model using the usual `lm` function :
+
+```{r model}
+model <- lm(euro_price ~ width, data = ikea_sofas)
+
+summary(model)
+
+```
+
+What we can say about the model output :
+
+-   The intercept values says that a sofa of 0 cm would cost -208.29€, which has no real meaning here.
+-   For each additional cm of `width` , the price increases on average by 4.44€
+-   The relation between these 2 variables is statistically significant (P-value \< 0.05)
+-   The model explains about 73% of the variability
+-   The mean error is however quite high, being of 247.6€.
+
+With this model, we could try to predict the price of a new IKEA sofa, based on its width.
+
+For example, we can try this with a new sofa with a width of 123 cm :
+
+```{r prediction}
+# We extract a single line from the dataset
+new_data <- data.frame(width = 123)
+
+new_data$predicted_price <- predict(model,newdata = new_data)
+
+new_data
+
+```
+
+```{r}
+ggplot(ikea_sofas,aes(x = width, y = euro_price)) +
+  geom_point(color = ikea_yellow) +
+  geom_point(data = new_data, aes(x = width, y = predicted_price), size = 4, color = "red") +
+  scale_y_continuous(labels = scales::dollar_format(suffix = "€", prefix = "")) +
+  labs(x = "Sofas width (cm)", y ="Price (€)")  +
+  theme(panel.background = element_rect(fill = ikea_blue))
+```
+
+But maybe we could build a more complex model, also including height and depth.
+
+# Multiple regression
+
+```{r line2, fig.width = 12}
+model <- lm(euro_price ~ width + height + depth, data = ikea_sofas)
+autoplot(model) + theme_bw()
+```
+
+The LINE conditions are fulfilled. We can now explore the model summary.
+
+```{r model 2}
+summary(model)
+```
+
+What we can say :
+
+-   Each slope coefficient is a partial regression coefficient. For example, we can say that, on average, each cm of `depth` will raise the price by 2.5€ *after controlling for width and height*.
+-   While width and depth seem to have a significant impact on the price, height doesn't
+-   This model still explains about 72% of the data variability
+-   The mean error is now 242.3€
+-   It seems that width plays the major role for determining the price of sofas
+
+## Using the model for prediction
+
+This time, we will be using a train/set datasets cross-validation method to evaluate the predictive power of our model. We will be using 80% of our dataset as a "train" set and the last 20% as the "test" set.
+
+```{r model train}
+set.seed(123)
+train <- ikea_sofas %>% sample_frac(0.8)
+test <- anti_join(ikea_sofas,train) 
+
+model <- lm(euro_price ~ width + height + depth, data = train)
+```
+
+We can now try to predict the price of buffets in the "test" dataset :
+
+```{r final prediction}
+prediction <- augment(model, newdata = test) 
+
+ggplot(prediction,aes(x = euro_price, y = .fitted)) +
+  geom_point(color = ikea_yellow) +
+  geom_abline(intercept = 0, slope = 1) +
+  labs(x = "Actual price", y = "Predicted price")
+
+```
+
+We can now evaluate the accuracy of our model by computing the Root Mean Square Error (RMSE) :
+
+```{r metrics calculation}
+RMSE <- prediction %>% 
+  summarise(square_error = (euro_price - .fitted)^2) %>% 
+  summarise(mean_square_error = mean(square_error,na.rm=TRUE)) %>% 
+  summarise(RMSE = sqrt(mean_square_error))
+
+RMSE
+```
+
+The Root Mean Square Error (RMSE) of the prediction is of `r round(RMSE$RMSE,2)`€.
+
+This prediction could be enhanced by the usage of other, more complex regression methods. But we will stop here for now as it is already quite a long analysis.
