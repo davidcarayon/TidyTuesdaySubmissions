@@ -1,0 +1,197 @@
+---
+title: "Week 46 : Mobile and Landline phones"
+author: "David Carayon"
+date: "Last update : `r Sys.Date()`"
+output: 
+  html_document:
+    css: analysis_report.css
+    theme: united
+    df_print: kable
+    highlight: haddock
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    toc_depth: 3
+    number_sections: false
+    code_download: true
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "../html") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Packages and setup
+
+We will be using these packages :
+
+```{r libraries}
+# Importing and wrangling data
+library(readr)
+library(tidyr)
+library(dplyr)
+
+# For plotting
+library(ggplot2)
+
+# For mapping
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(sf)
+library(mapview)
+```
+
+And we will be using my usual custom ggplot theme :
+
+```{r theme loading}
+source("https://raw.githubusercontent.com/davidcarayon/TidyTuesdaySubmissions/master/R/themes.R")
+```
+
+So this week's data is about historical phone usage.
+
+Data from [https://ourworldindata.org](https://ourworldindata.org/technology-adoption).
+
+2 datasets are available :
+
+```{r data loading}
+mobile <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-11-10/mobile.csv')
+
+landline <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-11-10/landline.csv')
+
+```
+
+# Exploratory data analysis
+
+## A first glimpse
+
+Let's have a first glimpse at these datasets.
+
+```{r first glimpse}
+
+glimpse(mobile)
+glimpse(landline)
+```
+
+It looks like these 2 datasets have a lot in common. In fact, they only differ by 1 column : `mobile_subs` for one and `landline_subs` for the other. Consequently, we could maybe try to join them and create a single column `subs`, associated with a `type` column containing either `mobile` or `landline`.
+
+> Note : The subs variables are expressed as the number of subscriptions for 100 people. Because a same person can have several subscriptions (private, work, etc.) this number can exceed 100. However, for convenience, I will often use the "%" terminology in this document.
+
+## Joining datasets to compare
+
+However, before joining, we need to find out on which keys we should join.
+
+```{r comparing datasets}
+mobile %>% filter(year == 1990 & code == "AFG") %>% pull(total_pop) ; landline %>% filter(year == 1990 & code == "AFG") %>% pull(total_pop)
+```
+
+For the same country, in the same year, the total\_pop are not the same in the two datasets... In this case, we do not know which datasets contains the "truth", so we have two options here :
+
+-   Considering that one datasets contains the "truth", and only joining the phone data from the other dataset
+
+-   Keeping the two datasets apart
+
+I opted for the first option, and joined the phone data from "landline" to "mobile" :
+
+```{r}
+subs_data <- landline %>% 
+  select(code,year,landline_subs) %>% 
+  full_join(mobile, by = c("code","year")) %>% 
+  pivot_longer(cols = contains("subs"),
+               names_to = "type",
+               values_to = "subs")
+```
+
+# Time series
+
+We will first observe the time series of both landline and mobile subscriptions :
+
+```{r worldwide,fig.width = 10}
+
+subs_data %>% 
+  mutate(type = recode(type,"landline_subs"="Landline","mobile_subs"="Mobile")) %>% 
+  group_by(year,type) %>% 
+  summarise(mean_subs = mean(subs,na.rm=TRUE)) %>% 
+  
+  ggplot(aes(x = year, y = mean_subs, color = type)) +
+  geom_smooth() +
+  geom_point() +
+  scale_x_continuous(breaks = seq(1990,2018,2)) +
+  scale_y_continuous(breaks = seq(0,100,10), limits = c(0,100)) +
+  labs(color = "Type", x = "Years", y = "Mean # of subscriptions for 100 people") + 
+  geom_curve(aes(x = 1998, y = 30, xend = 2001, yend = 22), curvature = 0.13, arrow = arrow(length = unit(2, "mm")), color = "black") +
+  annotate("text", x = 1998, y = 33, label = "Inversion point in 2001", size = 5)
+```
+
+As you can see, landline subscriptions were dominant in the 90's with an worldwide average between 15 and 20 subscriptions for 100 people. However, from 2001, mobile subscriptions have greatly increased until reaching an average of 95% in 2017, whereas landline subscriptions have stagnated around 20%.
+
+After visualising woldwide time series, we can now refine by continent :
+
+```{r continents,fig.width = 13}
+subs_data %>% 
+  mutate(type = recode(type,"landline_subs"="Landline","mobile_subs"="Mobile")) %>% 
+  drop_na(continent) %>% 
+  group_by(continent,year,type) %>% 
+  summarise(mean_subs = mean(subs,na.rm=TRUE)) %>% 
+  
+  ggplot(aes(x = year, y = mean_subs, color = continent)) +
+  geom_smooth() +
+  facet_wrap(~type) +
+  geom_point() +
+  scale_x_continuous(breaks = seq(1990,2018,2)) +
+  scale_y_continuous(breaks = seq(0,100,10), limits = c(0,100)) +
+  labs(color = "Type", x = "Years", y = "Mean # of subscriptions for 100 people") +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+As we can see, not all continents show the same overall number of subscriptions. It seems that European countries always had more landline (\~ 40%) but also more mobile subscriptions than other continents.
+
+Now last time series graph for my own country :
+
+```{r France, fig.width = 12}
+subs_data %>% 
+  mutate(type = recode(type,"landline_subs"="Landline","mobile_subs"="Mobile")) %>% 
+  filter(code == "FRA") %>% 
+  
+  ggplot(aes(x = year, y = subs, color = type)) +
+  geom_smooth() +
+  geom_point() +
+  scale_x_continuous(breaks = seq(1990,2018,2)) +
+  scale_y_continuous(breaks = seq(0,100,10)) +
+  labs(color = "Type", x = "Years", y = "Mean # of subscriptions for 100 people", subtitle = "France") 
+```
+
+As we could expect, France subscription data is quite similar to the average European one, with an inversion point in 2001 and nearly 100% mobile subscription in 2017. Landline subscriptions also show very high numbers here with about 60% subscription.
+
+# Mapping
+
+We will now produce simple maps based only on the `mobile` dataset.
+
+```{r sf map,fig.width = 12}
+
+# World map
+world <- ne_countries(scale = "medium", returnclass = "sf") %>%
+  full_join(mobile, by = c("brk_a3"="code")) %>% 
+  filter(year == 2017 | is.na(year)) %>% 
+  filter(mobile_subs < 200 | is.na(mobile_subs))
+
+
+na_world <- world %>% filter(is.na(mobile_subs))
+
+ggplot() +
+  geom_sf(data = world, aes(fill = mobile_subs)) +
+  scale_fill_viridis_c() +
+  theme(legend.text = element_text(size = 13),legend.key.width = unit(2.5, "cm"), plot.title = element_text(hjust = 0.5)) +
+  labs(title = "# of mobile subscriptions for 100 people",fill = "")
+```
+
+We can even try this with a very easy interactive version, using `{mapview}`, a simplified version of `{leaflet}` :
+
+```{r mapview, fig.width = 8}
+mapview(world, zcol = "mobile_subs", layer.name = "Mobile subscriptions")
+```
+
+```{r}
+xfun::session_info()
+```

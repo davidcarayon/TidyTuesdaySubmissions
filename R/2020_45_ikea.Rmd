@@ -2,6 +2,7 @@
 title: "Week 45 : IKEA furniture"
 subtitle : "This week's topic : Simple and multiple linear regression"
 author: "David Carayon"
+date: "Last update :`r Sys.Date()`"
 output: 
   html_document:
     css: analysis_report.css
@@ -14,7 +15,6 @@ output:
       smooth_scroll: true
     toc_depth: 3
     number_sections: false
-    code_folding: show
     code_download: true
 knit: (function(inputFile, encoding) {
   rmarkdown::render(inputFile, encoding = encoding, output_dir = "../html") })
